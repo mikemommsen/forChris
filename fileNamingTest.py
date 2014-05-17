@@ -47,8 +47,6 @@ def run(indir, outfile):
         # turn those into full paths
         toa = os.path.join(folder, toa)
         dem = os.path.join(folder, dem)
-        # set the snapRaster to the toa
-        arcpy.env.snapRaster = toa
         # make the output names 
         elevproj, utmelev = makenames(dem)
         outlist.append((toa, dem, elevproj, utmelev))
