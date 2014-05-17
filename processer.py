@@ -20,10 +20,6 @@ def clipper(inDem, outDem toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
     arcpy.Clip_management(inDem, toaData['extent'], outDem)
 
-intoa = r'C:\Users\libpub\Downloads\LE70400292003139EDC00\LE70400292003139EDC00_TIR.jpg'
-a = describeToa(intoa)
-print a['extent']
-
 def findfile(inlist, text):
     """this is where the files are found (toa and elev)"""
     # find all files where the last part matches the text input (example would be last 3 characters are toa or last 4 characters are elev
@@ -85,7 +81,6 @@ def run(indir):
         # delete the original dem
         arcpy.Delete_management(dem)
         
-
 def main():
     print 'starting the script'
     indir = sys.argv[1]
