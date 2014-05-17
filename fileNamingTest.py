@@ -1,5 +1,6 @@
 import os
 import sys
+import csv
 
 def findfile(inlist, text):
     """this is where the files are found (toa and elev)"""
@@ -28,8 +29,40 @@ def makenames(indem):
     elevproj = os.path.join(base, elevproj + fileextension)
     utmelev = os.path.join(base, utmelev + fileextension)
     return elevproj, utmelev
-
+    
+def run(indir, outfile):
+    outlist = []
+    folders = []
+    for x in os.listdir(indir):
+        folder = os.path.join(indir, x)
+        # make sure they all are dirs
+        if os.path.isdir(folder):
+            folders.append(folder)
+    for folder in folders:
+        # list out the contents of the folder
+        files = os.listdir(folder)
+        # find the toa and elev file (using the findfile function above)
+        toa = findfile(files, 'toa')
+        dem = findfile(files, 'elev')
+        # turn those into full paths
+        toa = os.path.join(folder, toa)
+        dem = os.path.join(folder, dem)
+        # set the snapRaster to the toa
+        arcpy.env.snapRaster = toa
+        # make the output names 
+        elevproj, utmelev = makenames(dem)
+        outlist.append((toa, dem, elevproj, utmelev))
+    with open(outfile, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(('toa', 'dem', 'elevproj', 'utmelev'))
+        writer.writerows(outlist)
+    print 'all done check:', outfile, 'for output'
+        
 def main():
+    
+    indir = sys.argv[1]
+    outfile = sys,argv[2]
+    run(indir)
     
 if __name__ == '__main__':
     main()
