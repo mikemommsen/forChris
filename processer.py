@@ -12,9 +12,9 @@ def describeToa(intoa):
     imageHeight = desc.height
     return {'spref': spref, 'extent': (extent.XMin, extent.YMin, extent.XMax, extent.YMax)}
 
-def reproject(indem, outdem, toa):
+def reproject(indem, outdem, toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
-    arcpy.ProjectRaster_management(indem, outdem, toa, "NEAREST")
+    arcpy.ProjectRaster_management(indem, outdem, toaData['spref'], "NEAREST")
     
 def clipper(inDem, outDem toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
@@ -75,7 +75,7 @@ def run(indir):
         # grab the information off of the toa (extent and spatialreference (we can get more too))
         toaData = describeToa(toa)
         # reproject the dem
-        prjdem = reproject(dem, elevproj, toa)
+        prjdem = reproject(dem, elevproj, toaData)
         # clip the reprojected dem
         clipper(prjdem, utmelev, toaData)
         # delete the projected dem
