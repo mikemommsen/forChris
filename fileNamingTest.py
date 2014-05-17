@@ -59,8 +59,8 @@ def run(indir, outfile):
 def main():
     
     indir = sys.argv[1]
-    outfile = sys,argv[2]
-    run(indir)
+    outfile = sys.argv[2]
+    run(indir, outfile)
     
 if __name__ == '__main__':
     main()
