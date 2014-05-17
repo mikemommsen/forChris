@@ -5,6 +5,7 @@ CELLSIZE = 30
 
 def describeToa(intoa):
     """grabs some of the data off of the toa file for use in other functions"""
+    # turns out that this whole function is not really needed
     desc = arcpy.Describe(intoa)
     spref = desc.spatialReference
     extent = desc.extent
