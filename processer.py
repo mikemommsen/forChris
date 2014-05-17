@@ -70,6 +70,8 @@ def run(indir):
         # turn those into full paths
         toa = os.path.join(folder, toa)
         dem = os.path.join(folder, dem)
+        # set the snapRaster to the toa
+        arcpy.env.snapRaster = toa
         # make the output names 
         elevproj, utmelev = makenames(dem)
         # grab the information off of the toa (extent and spatialreference (we can get more too))
