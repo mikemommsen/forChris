@@ -67,20 +67,23 @@ def run(indir):
         # turn those into full paths
         toa = os.path.join(folder, toa)
         dem = os.path.join(folder, dem)
-        # set the snapRaster to the toa
-        arcpy.env.snapRaster = toa
-        # make the output names 
-        elevproj, utmelev = makenames(dem)
-        # grab the information off of the toa (extent and spatialreference (we can get more too))
-        toaData = describeToa(toa)
-        # reproject the dem
-        prjdem = reproject(dem, elevproj, toaData)
-        # clip the reprojected dem
-        clipper(prjdem, utmelev, toaData)
-        # delete the projected dem
-        arcpy.Delete_management(prjdem)
-        # delete the original dem
-        arcpy.Delete_management(dem)
+        if toa and dem:
+            # set the snapRaster to the toa
+            arcpy.env.snapRaster = toa
+            # make the output names 
+            elevproj, utmelev = makenames(dem)
+            # grab the information off of the toa (extent and spatialreference (we can get more too))
+            toaData = describeToa(toa)
+            # reproject the dem
+            prjdem = reproject(dem, elevproj, toaData)
+            # clip the reprojected dem
+            clipper(prjdem, utmelev, toaData)
+            # delete the projected dem
+            arcpy.Delete_management(prjdem)
+            # delete the original dem
+            arcpy.Delete_management(dem)
+        else:
+            print 'had a problem finding toa or dem in :', folder
         
 def main():
     print 'starting the script'
