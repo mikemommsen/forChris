@@ -1,6 +1,7 @@
 import arcpy
 import os
 import sys
+CELLSIZE = 30
 
 def describeToa(intoa):
     """grabs some of the data off of the toa file for use in other functions"""
@@ -11,7 +12,7 @@ def describeToa(intoa):
     imageHeight = desc.height
     return {'spref': spref, 'extent': (extent.XMin, extent.YMin, extent.XMax, extent.YMax)}
 
-def reproject(indem, toa):
+def reproject(indem, outdem, toa):
     # no need for this to be its own function, but also could be tweaked slightly so why not
     arcpy.ProjectRaster_management(indem, outdem, toa, "NEAREST")
     
