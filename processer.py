@@ -9,15 +9,15 @@ def describeToa(intoa):
     desc = arcpy.Describe(intoa)
     spref = desc.spatialReference
     extent = desc.extent
-    imageWidth = desc.width
-    imageHeight = desc.height
+    #imageWidth = desc.width
+    #imageHeight = desc.height
     return {'spref': spref, 'extent': (extent.XMin, extent.YMin, extent.XMax, extent.YMax)}
 
 def reproject(indem, outdem, toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
-    arcpy.ProjectRaster_management(indem, outdem, toaData['spref'], "NEAREST")
+    arcpy.ProjectRaster_management(indem, outdem, toaData['spref'], "NEAREST", "30")
     
-def clipper(inDem, outDem toaData):
+def clipper(inDem, outDem, toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
     arcpy.Clip_management(inDem, toaData['extent'], outDem)
 
