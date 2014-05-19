@@ -40,11 +40,16 @@ def findfile(inlist, text):
 
 def makenames(indem):
     """this is where the names are made - nice to have in own function so we can tweak naming without fucking with anything else"""
+    # split the path into the path and filename
     base, filename = os.path.split(indem)
+    # split with filename to give base and extension
     filebase, fileextension = os.path.splitext(filename)
+    # find the part of the filename before the first underscore
     preunderscore = filebase.split('_')[0]
+    # take that part of the name and add the extensions for elevproj and utmelev
     elevproj = preunderscore + '_elevprj'
     utmelev = preunderscore + '_utmelev'
+    # merge the name with the path and extension (tif most likely)
     elevproj = os.path.join(base, elevproj + fileextension)
     utmelev = os.path.join(base, utmelev + fileextension)
     return elevproj, utmelev
