@@ -9,6 +9,7 @@ def describeToa(intoa):
     # describe the raster
     desc = arcpy.Describe(intoa)
     # grab the spatial reference
+    # if there is any concern that the spref is something other than utm wgs84 we could make sure that it is 
     spref = desc.spatialReference
     # and grab the extent object
     extent = desc.extent
