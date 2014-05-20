@@ -20,6 +20,8 @@ def describeToa(intoa):
 
 def reproject(indem, outdem, toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
+    # i am saying that all of the ouputs will have a cellsize of 30 meters
+    # should i verify this, or rip this information off of the intoa, or is it a safe assumption?
     arcpy.ProjectRaster_management(indem, outdem, toaData['spref'], "NEAREST", "30")
     
 def clipper(inDem, outDem, toaData):
