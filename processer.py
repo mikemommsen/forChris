@@ -20,7 +20,7 @@ def arcFunctions(intoa, indem):
     extent = desc.extent
     strextent = ' '.join(map(str, [extent.XMin, extent.YMin, extent.XMax, extent.YMax]))
     arcpy.ProjectRaster_management(indem, prjdem, spref, "NEAREST", "30")
-    arcpy.Clip_management(inDem, strextent, utmprj)
+    arcpy.Clip_management(prjdem, strextent, utmprj)
     # delete the projected dem
     arcpy.Delete_management(prjdem)
     # delete the original dem
@@ -71,7 +71,7 @@ def findFilePairs(indir):
                 processqueue += findFilePairs(os.path.join(folder, subfolder))
     return processqueue
     
-def runArc(indir)
+def runArc(indir):
     # loop through each filePair
     for toa, dem in findFilePairs(indir):
         # set the snapRaster to the toa
