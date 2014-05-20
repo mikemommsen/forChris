@@ -79,15 +79,19 @@ def runArc(indir)
 
 def runNoArc(indir):
     for toa, dem in findFilePairs(indir):
-        
-
+        prjdem, utmprj = makenames(dem)
+        print toa, dem, prjdem, utmprj
 
 def main():
     print 'starting the script'
     # this is where the input goes
     indir = sys.argv[1]
-    # call the run function
-    run(indir)
+    try:
+        import arcpy
+        runArc(indir)
+    except ImportError as IE:
+        print IE
+        runNoArc(indir)
     print 'all done'
 
 if __name__ == '__main__':
