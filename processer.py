@@ -26,13 +26,17 @@ def clipper(inDem, outDem, toaData):
 
 def findfile(inlist, text):
     """this is where the files are found (toa and elev)"""
+    # this whole function can be reworked to work with your filenaming as safely as possible
+    # I know you use consistent names, so its not a challenge to make it work, but we can do it in a few ways
+    # we could use regex to look for specific patterns
+    # or we could make the filename based off of the folder we are in  or other metadata (not sure if that could work)
+    # or we could do what i am doing here where we look for the last part of the filename
     # find all files where the last part matches the text input (example would be last 3 characters are toa or last 4 characters are elev
     goodfile = [x for x in inlist if os.path.splitext(x)[0][-len(text):] == text]
     # if it finds a file
     assert goodfile, '{} {} {}'.format('couldnt find file', text, 'i will work on making this a real error that is handled better')
     # and there is only one
     assert len(goodfile) == 1, '{} {} {}'.format('more than one', text, 'i will work on making this a better error')
-    # then we use it
     return goodfile[0]
     
 def makenames(indem):
@@ -91,7 +95,9 @@ def run(indir):
 
 def main():
     print 'starting the script'
+    # this is where the input goes
     indir = sys.argv[1]
+    # call the run function
     run(indir)
     print 'all done'
 
