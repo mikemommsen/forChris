@@ -61,6 +61,8 @@ def run(indir):
         folder = os.path.join(indir, x)
         # make sure they all are dirs
         if os.path.isdir(folder):
+            mylist = os.listdir(folder)
+            # this is where we could add a change of what folders we process
             folders.append(folder)
     # loop through each folder
     for folder in folders:
