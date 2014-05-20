@@ -28,7 +28,7 @@ def clipper(inDem, outDem, toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
     arcpy.Clip_management(inDem, toaData['extent'], outDem)
 
-def findfile(inlist, text):
+def findfile(inlist, path, text):
     """this is where the files are found (toa and elev)"""
     # this whole function can be reworked to work with your filenaming as safely as possible
     # I know you use consistent names, so its not a challenge to make it work, but we can do it in a few ways
@@ -38,10 +38,8 @@ def findfile(inlist, text):
     # find all files where the last part matches the text input (example would be last 3 characters are toa or last 4 characters are elev
     goodfile = [x for x in inlist if os.path.splitext(x)[0][-len(text):] == text]
     # if it finds a file
-    assert goodfile, '{} {} {}'.format('couldnt find file', text, 'i will work on making this a real error that is handled better')
-    # and there is only one
-    assert len(goodfile) == 1, '{} {} {}'.format('more than one', text, 'i will work on making this a better error')
-    return goodfile[0]
+    if goodfile and len(goodfile) == 1:
+        return os.path.join(path, goodfile[0])
     
 def makenames(indem):
     """this is where the names are made - nice to have in own function so we can tweak naming without fucking with anything else"""
@@ -59,29 +57,25 @@ def makenames(indem):
     utmelev = os.path.join(base, utmelev + fileextension)
     return elevproj, utmelev
 
-def run(indir):
-    # list out all of the folders (we do full paths here so we dont get confused
-    folders = []
+def findFilePairs(indir):
+    """takes a directory"""
+    processqueue = []
     for x in os.listdir(indir):
         folder = os.path.join(indir, x)
         # make sure they all are dirs
         if os.path.isdir(folder):
-            mylist = os.listdir(folder)
-            # this is where we could add a change of what folders we process
-            folders.append(folder)
-    # loop through each folder
-    for folder in folders:
-        # list out the contents of the folder
-        files = os.listdir(folder)
-        # find the toa and elev file (using the findfile function above)
-        try:
-            toa = findfile(files, 'toa')
-            dem = findfile(files, 'elev')
-        Except AssertionError as ae:
-            print folder, ae
-        # turn those into full paths
-        toa = os.path.join(folder, toa)
-        dem = os.path.join(folder, dem)
+            pathlist = os.listdir(folder)
+            toa = findfile(pathlist, path, 'toa')
+            dem = findfile(pathlist, path, 'elev')
+            if toa and dem:
+                processqueue.append((toa, dem))
+            for subfolder in (x for x in pathlist if os.path.isdir(os.path.join(folder, x))):
+                processqueue += run(subfolder)
+    return processqueue
+    
+def run(indir)
+    # loop through each filePair
+    for toa, dem in findFilePairs(indir):
         # set the snapRaster to the toa
         arcpy.env.snapRaster = toa
         # make the output names 
