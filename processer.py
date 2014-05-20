@@ -24,7 +24,7 @@ def arcFunctions(intoa, indem):
     # delete the projected dem
     arcpy.Delete_management(prjdem)
     # delete the original dem
-    arcpy.Delete_management(dem)
+    arcpy.Delete_management(indem)
 
 def findfile(inlist, path, text):
     """this is where the files are found (toa and elev)"""
@@ -62,9 +62,10 @@ def findFilePairs(indir):
         folder = os.path.join(indir, x)
         # make sure they all are dirs
         if os.path.isdir(folder):
+            
             pathlist = os.listdir(folder)
-            toa = findfile(pathlist, indir, 'toa')
-            dem = findfile(pathlist, indir, 'elev')
+            toa = findfile(pathlist, folder, 'toa')
+            dem = findfile(pathlist, folder, 'elev')
             if toa and dem:
                 processqueue.append((toa, dem))
             for subfolder in (x for x in pathlist if os.path.isdir(os.path.join(folder, x))):
