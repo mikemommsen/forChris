@@ -1,7 +1,8 @@
+# mike mommsen
+# may 2014
 import arcpy
 import os
 import sys
-CELLSIZE = 30
 
 def describeToa(intoa):
     """grabs some of the data off of the toa file for use in other functions"""
