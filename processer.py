@@ -6,11 +6,14 @@ CELLSIZE = 30
 def describeToa(intoa):
     """grabs some of the data off of the toa file for use in other functions"""
     # turns out that this whole function is not really needed
+    # describe the raster
     desc = arcpy.Describe(intoa)
+    # grab the spatial reference
     spref = desc.spatialReference
+    # and grab the extent object
     extent = desc.extent
-    #imageWidth = desc.width
-    #imageHeight = desc.height
+    # most basic way to return stuff
+    # we could think about taking the intersection of this extent and the dem extent to make sure that they have the same exact extents for matlab steps
     return {'spref': spref, 'extent': ' '.join(map(str, [extent.XMin, extent.YMin, extent.XMax, extent.YMax]))}
 
 def reproject(indem, outdem, toaData):
@@ -26,7 +29,7 @@ def findfile(inlist, text):
     # find all files where the last part matches the text input (example would be last 3 characters are toa or last 4 characters are elev
     goodfile = [x for x in inlist if os.path.splitext(x)[0][-len(text):] == text]
     # if it finds a file
-    assert goodfile, '{} {} {}'.format('couldnt find file', text, 'i will work on making this a real error that is handled better'_
+    assert goodfile, '{} {} {}'.format('couldnt find file', text, 'i will work on making this a real error that is handled better')
     # and there is only one
     assert len(goodfile) == 1, '{} {} {}'.format('more than one', text, 'i will work on making this a better error')
     # then we use it
@@ -71,24 +74,21 @@ def run(indir):
         # turn those into full paths
         toa = os.path.join(folder, toa)
         dem = os.path.join(folder, dem)
-        if toa and dem:
-            # set the snapRaster to the toa
-            arcpy.env.snapRaster = toa
-            # make the output names 
-            elevproj, utmelev = makenames(dem)
-            # grab the information off of the toa (extent and spatialreference (we can get more too))
-            toaData = describeToa(toa)
-            # reproject the dem
-            prjdem = reproject(dem, elevproj, toaData)
-            # clip the reprojected dem
-            clipper(prjdem, utmelev, toaData)
-            # delete the projected dem
-            arcpy.Delete_management(prjdem)
-            # delete the original dem
-            arcpy.Delete_management(dem)
-        else:
-            print 'had a problem finding toa or dem in :', folder
-        
+        # set the snapRaster to the toa
+        arcpy.env.snapRaster = toa
+        # make the output names 
+        elevproj, utmelev = makenames(dem)
+        # grab the information off of the toa (extent and spatialreference (we can get more too))
+        toaData = describeToa(toa)
+        # reproject the dem
+        prjdem = reproject(dem, elevproj, toaData)
+        # clip the reprojected dem
+        clipper(prjdem, utmelev, toaData)
+        # delete the projected dem
+        arcpy.Delete_management(prjdem)
+        # delete the original dem
+        arcpy.Delete_management(dem)
+
 def main():
     print 'starting the script'
     indir = sys.argv[1]
