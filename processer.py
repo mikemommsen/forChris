@@ -65,12 +65,12 @@ def findFilePairs(indir):
         # make sure they all are dirs
         if os.path.isdir(folder):
             pathlist = os.listdir(folder)
-            toa = findfile(pathlist, path, 'toa')
-            dem = findfile(pathlist, path, 'elev')
+            toa = findfile(pathlist, indir, 'toa')
+            dem = findfile(pathlist, indir, 'elev')
             if toa and dem:
                 processqueue.append((toa, dem))
             for subfolder in (x for x in pathlist if os.path.isdir(os.path.join(folder, x))):
-                processqueue += run(subfolder)
+                processqueue += findFilePairs(os.path.join(folder, subfolder))
     return processqueue
     
 def run(indir)
