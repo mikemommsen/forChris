@@ -11,7 +11,7 @@ def describeToa(intoa):
     extent = desc.extent
     #imageWidth = desc.width
     #imageHeight = desc.height
-    return {'spref': spref, 'extent': (extent.XMin, extent.YMin, extent.XMax, extent.YMax)}
+    return {'spref': spref, 'extent': ' '.join(map(str, extent.XMin, extent.YMin, extent.XMax, extent.YMax))}
 
 def reproject(indem, outdem, toaData):
     # no need for this to be its own function, but also could be tweaked slightly so why not
