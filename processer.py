@@ -26,9 +26,9 @@ def findfile(inlist, text):
     # find all files where the last part matches the text input (example would be last 3 characters are toa or last 4 characters are elev
     goodfile = [x for x in inlist if os.path.splitext(x)[0][-len(text):] == text]
     # if it finds a file
-    assert goodfile, 'couldnt find file', text, 'i will work on making this a real error that is handled better'
+    assert goodfile, '{} {} {}'.format('couldnt find file', text, 'i will work on making this a real error that is handled better'_
     # and there is only one
-    assert len(goodfile) == 1, 'more that one', text, 'i will work on making this a better error'
+    assert len(goodfile) == 1, '{} {} {}'.format('more than one', text, 'i will work on making this a better error')
     # then we use it
     return goodfile[0]
     
