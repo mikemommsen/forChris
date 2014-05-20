@@ -4,7 +4,6 @@ import arcpy
 import os
 import sys
 
-    
 def arcFunctions(intoa, indem):
     """single function that uses all the arc functions (allows us to run parts of the script without arc)"""
     import arcpy
@@ -72,23 +71,16 @@ def findFilePairs(indir):
                 processqueue += findFilePairs(os.path.join(folder, subfolder))
     return processqueue
     
-def run(indir)
+def runArc(indir)
     # loop through each filePair
     for toa, dem in findFilePairs(indir):
         # set the snapRaster to the toa
-        arcpy.env.snapRaster = toa
-        # make the output names 
-        elevproj, utmelev = makenames(dem)
-        # grab the information off of the toa (extent and spatialreference (we can get more too))
-        toaData = describeToa(toa)
-        # reproject the dem
-        prjdem = reproject(dem, elevproj, toaData)
-        # clip the reprojected dem
-        clipper(prjdem, utmelev, toaData)
-        # delete the projected dem
-        arcpy.Delete_management(prjdem)
-        # delete the original dem
-        arcpy.Delete_management(dem)
+        arcFunctions(toa, dem)
+
+def runNoArc(indir):
+    for toa, dem in findFilePairs(indir):
+        
+
 
 def main():
     print 'starting the script'
