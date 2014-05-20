@@ -4,9 +4,14 @@ import arcpy
 import os
 import sys
 
-def describeToa(intoa):
-    """grabs some of the data off of the toa file for use in other functions"""
-    # turns out that this whole function is not really needed
+    
+def arcFunctions(intoa, indem):
+    """single function that uses all the arc functions (allows us to run parts of the script without arc)"""
+    import arcpy
+    # set the snapRaster
+    arcpy.env.snapRaster = intoa
+    # make the output names
+    prjdem, utmprj = makenames(indem)
     # describe the raster
     desc = arcpy.Describe(intoa)
     # grab the spatial reference
@@ -14,19 +19,13 @@ def describeToa(intoa):
     spref = desc.spatialReference
     # and grab the extent object
     extent = desc.extent
-    # most basic way to return stuff
-    # we could think about taking the intersection of this extent and the dem extent to make sure that they have the same exact extents for matlab steps
-    return {'spref': spref, 'extent': ' '.join(map(str, [extent.XMin, extent.YMin, extent.XMax, extent.YMax]))}
-
-def reproject(indem, outdem, toaData):
-    # no need for this to be its own function, but also could be tweaked slightly so why not
-    # i am saying that all of the ouputs will have a cellsize of 30 meters
-    # should i verify this, or rip this information off of the intoa, or is it a safe assumption?
-    arcpy.ProjectRaster_management(indem, outdem, toaData['spref'], "NEAREST", "30")
-    
-def clipper(inDem, outDem, toaData):
-    # no need for this to be its own function, but also could be tweaked slightly so why not
-    arcpy.Clip_management(inDem, toaData['extent'], outDem)
+    strextent = ' '.join(map(str, [extent.XMin, extent.YMin, extent.XMax, extent.YMax]))
+    arcpy.ProjectRaster_management(indem, prjdem, spref, "NEAREST", "30")
+    arcpy.Clip_management(inDem, strextent, utmprj)
+    # delete the projected dem
+    arcpy.Delete_management(prjdem)
+    # delete the original dem
+    arcpy.Delete_management(dem)
 
 def findfile(inlist, path, text):
     """this is where the files are found (toa and elev)"""
