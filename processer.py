@@ -83,6 +83,7 @@ def main():
     print 'starting the script'
     # this is where the input goes
     indir = sys.argv[1]
+    mode = sys.argv[2] # arc or noarc
     try:
         import arcpy
         runArc(indir)
