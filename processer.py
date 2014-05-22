@@ -77,7 +77,9 @@ def runArc(indir):
 def runNoArc(indir):
     for toa, dem in findFilePairs(indir):
         prjdem, utmprj = makenames(dem)
-        print toa, dem, prjdem, utmprj
+        mylist = ', '.join((os.path.split(x)[1] for x in (toa, dem, prjdem, utmprj)))
+        folder = os.path.split(toa)[0]
+        print 'folder {}, filenames {}'.format(folder, mylist)
 
 def main():
     print 'starting the script'
