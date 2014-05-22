@@ -55,21 +55,17 @@ def makenames(indem):
     utmelev = os.path.join(base, utmelev + fileextension)
     return elevproj, utmelev
 
-def findFilePairs(indir):
+def findFilePairs(folder):
     """takes a directory"""
     processqueue = []
-    for x in os.listdir(indir):
-        folder = os.path.join(indir, x)
-        # make sure they all are dirs
-        if os.path.isdir(folder):
-            
-            pathlist = os.listdir(folder)
-            toa = findfile(pathlist, folder, 'toa')
-            dem = findfile(pathlist, folder, 'elev')
-            if toa and dem:
-                processqueue.append((toa, dem))
-            for subfolder in (x for x in pathlist if os.path.isdir(os.path.join(folder, x))):
-                processqueue += findFilePairs(os.path.join(folder, subfolder))
+    if os.path.isdir(folder):
+        pathlist = os.listdir(folder)
+        toa = findfile(pathlist, folder, '_toa')
+        dem = findfile(pathlist, folder, '_elev')
+        if toa and dem:
+            processqueue.append((toa, dem))
+        for subfolder in (x for x in pathlist if os.path.isdir(os.path.join(folder, x))):
+            processqueue += findFilePairs(os.path.join(folder, subfolder))
     return processqueue
     
 def runArc(indir):
