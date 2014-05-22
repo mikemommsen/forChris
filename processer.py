@@ -84,11 +84,14 @@ def main():
     # this is where the input goes
     indir = sys.argv[1]
     mode = sys.argv[2] # arc or noarc
-    try:
-        import arcpy
-        runArc(indir)
-    except ImportError as IE:
-        print IE
+    if mode == 'arc':
+        try:
+            import arcpy
+            runArc(indir)
+        except ImportError as IE:
+            print IE
+            runNoArc(indir)
+    else:
         runNoArc(indir)
     print 'all done'
 
