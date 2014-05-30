@@ -104,8 +104,14 @@ def runNoArc(indir):
 def main():
     print 'starting the script'
     # this is where the input goes
-    indir = sys.argv[1]
-    mode = sys.argv[2] # arc or noarc
+    if len(sys.argv) == 3:
+        indir = sys.argv[1]
+        mode = sys.argv[2] # arc or noarc
+    elif len(sys.argv) == 2:
+        indir = sys.argv[1]
+        mode = 'arc'
+    else:
+        print 'you do not have the right amount of arguments'
     if mode == 'arc':
         try:
             import arcpy
